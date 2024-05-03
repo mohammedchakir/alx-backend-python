@@ -26,4 +26,4 @@ Navigate to the desired topic or project directory to explore the associated mat
 
 Author📑:
 
-MOHAMMED-CHAKIR ZERROUKI (github)[mohammedchakir]
+[MOHAMMED CHAKIR](https://github.com/mohammedchakir)
