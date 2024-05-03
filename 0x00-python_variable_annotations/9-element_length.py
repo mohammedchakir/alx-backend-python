@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+This script defines a function to safely retrieve the first
+element of a sequence.
+"""
 
 from typing import Iterable, Sequence, List, Tuple
 
