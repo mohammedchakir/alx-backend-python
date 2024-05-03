@@ -4,18 +4,12 @@ This script defines a function to safely retrieve
 the first element of a sequence.
 """
 
-from typing import Sequence, Any, Union
+import typing
 
 
-def safe_first_element(lst: Sequence) -> Union[Any, None]:
-    """
-    Function to safely retrieve the first element of a sequence.
-    Args:
-        lst (Sequence): The input sequence.
-    Returns:
-        Union[Any, None]: The first element of the sequence
-        if it exists, otherwise None.
-    """
+def safe_first_element(lst: typing.Sequence[typing.Any]) -> \
+        typing.Union[typing.Any, None]:
+    """Duck-typed annotation"""
     if lst:
         return lst[0]
     else:
