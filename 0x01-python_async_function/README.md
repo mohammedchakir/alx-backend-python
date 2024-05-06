@@ -5,8 +5,8 @@
 By Emmanuel Turlay, Staff Software Engineer at Cruise
 
 
+![4aeaa9c3cb1f316c05c4](https://github.com/mohammedchakir/alx-backend-python/assets/129831433/8f25d94a-648d-4abc-aba3-19ddbfa35310)
 
-![](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2019/12/4aeaa9c3cb1f316c05c4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20220627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220627T153335Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=bb4b42ed7b89822a9e9b7f48f49fb42d7bfd50feb9c13428f1f674751bd3af58)
 
 ## Resources:
 

@@ -7,7 +7,6 @@ import asyncio
 import time
 from typing import List
 from random import uniform
-from concurrent.futures import ThreadPoolExecutor
 
 
 async def wait_random(max_delay: int) -> float:
