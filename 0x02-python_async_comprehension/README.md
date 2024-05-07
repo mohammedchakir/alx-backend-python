@@ -4,8 +4,7 @@
 
 By Emmanuel Turlay, Staff Software Engineer at Cruise
 
-
-![](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2019/12/ee85b9f67c384e29525b.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20220628%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220628T132116Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=8d0b744d99c8db95af5258137e5f83fc0d6f2f664dbab7e577a4df43a690951b)
+<img width="638" alt="ee85b9f67c384e29525b" src="https://github.com/mohammedchakir/alx-backend-javascript/assets/129831433/2d7a4a56-324f-4263-8713-ca4e29a005f9">
 
 ## Resources:
 
