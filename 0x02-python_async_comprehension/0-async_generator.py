@@ -2,10 +2,11 @@
 """Async Generator Module"""
 import asyncio
 import random
+from typing import AsyncGenerator, Any
 
 
-async def async_generator():
-    """Coroutine that yields random numbers asynchronously."""
-    for _ in range(10):
+async def async_generator() -> AsyncGenerator[Any, Any]:
+    """Loop 10 times, wait 1 sec each time"""
+    for i in range(10):
         await asyncio.sleep(1)
-        yield random.uniform(0, 10)
+        yield random.random() * 10
