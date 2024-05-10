@@ -19,11 +19,12 @@ This repository contains programs, projects, and resources for backend developme
 To access any topic or project within this repository, follow these steps:
 
 Clone the repository:
-
-`git clone https://github.com/your-username/alx-backend-python.git`
-
-`cd alx-backend-python`
-
+```
+git clone https://github.com/your-username/alx-backend-python.git
+```
+```
+cd alx-backend-python
+```
 Navigate to the desired topic or project directory to explore the associated materials.
 
 
