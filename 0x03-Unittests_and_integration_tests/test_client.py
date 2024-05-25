@@ -13,7 +13,6 @@ class TestGithubOrgClient(unittest.TestCase):
     """
     Test case for the GithubOrgClient class in client module.
     """
-
     @parameterized.expand([
         ("google",),
         ("abc",)
