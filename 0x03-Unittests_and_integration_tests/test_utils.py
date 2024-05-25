@@ -81,17 +81,16 @@ class TestMemoize(unittest.TestCase):
             def a_property(self):
                 return self.a_method()
 
-        with patch.object(TestClass, 'a_method') as mock_method:
-            test_instance = TestClass()
-            # Accessing a_property twice
+        test_instance = TestClass()
+
+        with patch.object(test_instance, 'a_method') as mock_method:
+            mock_method.return_value = 42
+
             first_call = test_instance.a_property()
             second_call = test_instance.a_property()
 
-            # Asserting the result is correct
             self.assertEqual(first_call, 42)
             self.assertEqual(second_call, 42)
-
-            # Asserting a_method is only called once
             mock_method.assert_called_once()
 
 
