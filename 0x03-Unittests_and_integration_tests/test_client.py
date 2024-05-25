@@ -5,8 +5,9 @@ Unit tests for client.GithubOrgClient class.
 
 import unittest
 from unittest.mock import patch, PropertyMock, MagicMock
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -119,6 +120,73 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("test_org")
         result = client.has_license(repo, license_key)
         self.assertEqual(result, expected)
+
+
+@parameterized_class([
+    {"org_payload": org_payload, "repos_payload": repos_payload,
+     "expected_repos": expected_repos, "apache2_repos": apache2_repos}
+])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """
+    Integration test case for the GithubOrgClient class in client module.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """
+        Set up the class by patching requests.get to return example payloads.
+        """
+        cls.get_patcher = patch('requests.get',
+                                side_effect=cls.mocked_requests_get)
+        cls.mocked_get = cls.get_patcher.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        """Tear down the class by stopping the patcher."""
+        cls.get_patcher.stop()
+
+    @staticmethod
+    def mocked_requests_get(url):
+        """
+        Mock function to return the appropriate payload based on the URL.
+        """
+        if url == "https://api.github.com/orgs/google":
+            return MockResponse(org_payload)
+        elif url == "https://api.github.com/orgs/google/repos":
+            return MockResponse(repos_payload)
+        return MockResponse(None, 404)
+
+    def test_public_repos(self):
+        """
+        Test that GithubOrgClient.public_repos returns the expected
+        list of repositories.
+        """
+        client = GithubOrgClient("google")
+        self.assertEqual(client.public_repos(), expected_repos)
+
+    def test_public_repos_with_license(self):
+        """
+        Test that GithubOrgClient.public_repos returns the expected list
+        of repositories with a specific license.
+        """
+        client = GithubOrgClient("google")
+        self.assertEqual(client.public_repos(license="apache-2.0"),
+                         apache2_repos)
+
+
+class MockResponse:
+    """
+    Mock response class to simulate the requests.Response object.
+    """
+
+    def __init__(self, json_data, status_code=200):
+        """the init function stands for data-json"""
+        self.json_data = json_data
+        self.status_code = status_code
+
+    def json(self):
+        """Return the JSON data of the response."""
+        return self.json_data
 
 
 if __name__ == "__main__":
