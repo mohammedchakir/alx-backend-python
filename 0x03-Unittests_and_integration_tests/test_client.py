@@ -37,12 +37,12 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         with patch('client.GithubOrgClient.org',
                    new_callable=PropertyMock) as mock_org:
-            org_payload = {"public_repos": 5}
+            org_payload = {"repos_url": "https://api.github.com/orgs /\
+                           /test_org/repos"}
             mock_org.return_value = org_payload
             client = GithubOrgClient("test_org")
             result = client._public_repos_url
-            expected_result = f"https://api.github.com/orgs/test_org/repos? /\
-                per_page={org_payload['public_repos']}&page=1"
+            expected_result = org_payload["repos_url"]
             self.assertEqual(result, expected_result)
 
 
