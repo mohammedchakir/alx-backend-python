@@ -4,7 +4,7 @@ Unit tests for client.GithubOrgClient class.
 """
 
 import unittest
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, MagicMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -45,31 +45,60 @@ class TestGithubOrgClient(unittest.TestCase):
             expected_result = org_payload["repos_url"]
             self.assertEqual(result, expected_result)
 
-    @patch('client.get_json')
-    def test_public_repos(self, mock_get_json):
+    @patch("client.get_json")
+    def test_public_repos(self, mock_get_json: MagicMock) -> None:
         """
         Test that GithubOrgClient.public_repos returns the correct
-        list of repos.
+        repositories.
         """
-        mock_repos_payload = [
-            {"name": "repo1"},
-            {"name": "repo2"},
-            {"name": "repo3"}
+        test_payload = [
+            {
+                "name": "episodes.dart",
+                "private": False,
+                "owner": {"login": "google", "id": 1342004},
+                "fork": False,
+                "url": "https://api.github.com/repos/google/episodes.dart",
+                "created_at": "2013-01-19T00:31:37Z",
+                "updated_at": "2019-09-23T11:53:58Z",
+                "has_issues": True,
+                "forks": 22,
+                "default_branch": "master",
+            },
+            {
+                "name": "kratu",
+                "private": False,
+                "owner": {"login": "google", "id": 1342004},
+                "fork": False,
+                "url": "https://api.github.com/repos/google/kratu",
+                "created_at": "2013-03-04T22:52:33Z",
+                "updated_at": "2019-11-15T22:22:16Z",
+                "has_issues": True,
+                "forks": 32,
+                "default_branch": "master",
+            },
         ]
-        mock_get_json.return_value = mock_repos_payload
-        mock_url = "https://api.github.com/orgs/google/repos"
 
-        with patch('client.GithubOrgClient._public_repos_url',
-                   new_callable=PropertyMock) as mock_public_repos_url:
-            mock_public_repos_url.return_value = mock_url
+        mock_get_json.return_value = test_payload
 
-            github_client = GithubOrgClient("google")
-            result = github_client.public_repos
+        with patch(
+            "client.GithubOrgClient._public_repos_url",
+            new_callable=PropertyMock,
+        ) as mock_public_repos_url:
+            mock_public_repos_url.return_value = "https://api.github.com /\
+                /orgs/google/repos"
 
-            expected_result = ["repo1", "repo2", "repo3"]
-            self.assertEqual(result, expected_result)
+            client = GithubOrgClient("google")
+
+            repos = client.public_repos
+
             mock_public_repos_url.assert_called_once()
-            mock_get_json.assert_called_once_with()
+            mock_get_json.assert_called_once_with(
+                "https://api.github.com/orgs/google/repos")
+
+            self.assertEqual(
+                repos,
+                ["episodes.dart", "kratu"],
+            )
 
 
 if __name__ == "__main__":
