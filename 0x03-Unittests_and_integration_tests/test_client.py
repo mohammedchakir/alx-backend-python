@@ -51,54 +51,73 @@ class TestGithubOrgClient(unittest.TestCase):
         Test that GithubOrgClient.public_repos returns the correct
         repositories.
         """
-        test_payload = [
-            {
-                "name": "episodes.dart",
-                "private": False,
-                "owner": {"login": "google", "id": 1342004},
-                "fork": False,
-                "url": "https://api.github.com/repos/google/episodes.dart",
-                "created_at": "2013-01-19T00:31:37Z",
-                "updated_at": "2019-09-23T11:53:58Z",
-                "has_issues": True,
-                "forks": 22,
-                "default_branch": "master",
-            },
-            {
-                "name": "kratu",
-                "private": False,
-                "owner": {"login": "google", "id": 1342004},
-                "fork": False,
-                "url": "https://api.github.com/repos/google/kratu",
-                "created_at": "2013-03-04T22:52:33Z",
-                "updated_at": "2019-11-15T22:22:16Z",
-                "has_issues": True,
-                "forks": 32,
-                "default_branch": "master",
-            },
-        ]
-
-        mock_get_json.return_value = test_payload
-
+        test_payload = {
+            'repos_url': "https://api.github.com/users/google/repos",
+            'repos': [
+                {
+                    "id": 7697149,
+                    "name": "episodes.dart",
+                    "private": False,
+                    "owner": {
+                        "login": "google",
+                        "id": 1342004,
+                    },
+                    "fork": False,
+                    "url": "https://api.github.com/repos/google/episodes.dart",
+                    "created_at": "2013-01-19T00:31:37Z",
+                    "updated_at": "2019-09-23T11:53:58Z",
+                    "has_issues": True,
+                    "forks": 22,
+                    "default_branch": "master",
+                },
+                {
+                    "id": 8566972,
+                    "name": "kratu",
+                    "private": False,
+                    "owner": {
+                        "login": "google",
+                        "id": 1342004,
+                    },
+                    "fork": False,
+                    "url": "https://api.github.com/repos/google/kratu",
+                    "created_at": "2013-03-04T22:52:33Z",
+                    "updated_at": "2019-11-15T22:22:16Z",
+                    "has_issues": True,
+                    "forks": 32,
+                    "default_branch": "master",
+                },
+            ]
+        }
+        mock_get_json.return_value = test_payload["repos"]
         with patch(
             "client.GithubOrgClient._public_repos_url",
             new_callable=PropertyMock,
         ) as mock_public_repos_url:
-            mock_public_repos_url.return_value = "https://api.github.com /\
-                /orgs/google/repos"
-
-            client = GithubOrgClient("google")
-
-            repos = client.public_repos
-
-            mock_public_repos_url.assert_called_once()
-            mock_get_json.assert_called_once_with(
-                "https://api.github.com/orgs/google/repos")
-
+            mock_public_repos_url.return_value = test_payload["repos_url"]
             self.assertEqual(
-                repos,
-                ["episodes.dart", "kratu"],
+                GithubOrgClient("google").public_repos(),
+                [
+                    "episodes.dart",
+                    "kratu",
+                ],
             )
+            mock_public_repos_url.assert_called_once()
+        mock_get_json.assert_called_once()
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False)
+    ])
+    def test_has_license(self, repo, license_key, expected_result,
+                         mock_get_json):
+        """
+        Test GithubOrgClient.has_license returns the correct boolean value.
+        """
+        mock_get_json.return_value = [repo]
+        client = GithubOrgClient("test_org")
+        result = client.has_license(license_key)
+        self.assertEqual(result, expected_result)
+        mock_get_json.assert_called_once()
 
 
 if __name__ == "__main__":
