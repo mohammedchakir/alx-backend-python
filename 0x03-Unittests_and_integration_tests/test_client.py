@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch, PropertyMock, MagicMock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
-from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -123,8 +123,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
 
 @parameterized_class([
-    {"org_payload": org_payload, "repos_payload": repos_payload,
-     "expected_repos": expected_repos, "apache2_repos": apache2_repos}
+    {"org_payload": TEST_PAYLOAD[0][0], "repos_payload": TEST_PAYLOAD[0][1],
+     "expected_repos": TEST_PAYLOAD[0][2], "apache2_repos": TEST_PAYLOAD[0][3]}
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
@@ -151,9 +151,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         Mock function to return the appropriate payload based on the URL.
         """
         if url == "https://api.github.com/orgs/google":
-            return MockResponse(org_payload)
+            return MockResponse(TEST_PAYLOAD)
         elif url == "https://api.github.com/orgs/google/repos":
-            return MockResponse(repos_payload)
+            return MockResponse(TEST_PAYLOAD)
         return MockResponse(None, 404)
 
     def test_public_repos(self):
@@ -162,7 +162,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         list of repositories.
         """
         client = GithubOrgClient("google")
-        self.assertEqual(client.public_repos(), expected_repos)
+        self.assertEqual(client.public_repos(), TEST_PAYLOAD)
 
     def test_public_repos_with_license(self):
         """
@@ -171,7 +171,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(license="apache-2.0"),
-                         apache2_repos)
+                         TEST_PAYLOAD)
 
 
 class MockResponse:
