@@ -142,7 +142,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Tear down the class by stopping the patcher."""
+        """
+        Tear down the class by stopping the patcher.
+        """
         cls.get_patcher.stop()
 
     @staticmethod
@@ -151,9 +153,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         Mock function to return the appropriate payload based on the URL.
         """
         if url == "https://api.github.com/orgs/google":
-            return MockResponse(TEST_PAYLOAD)
+            return MockResponse(TEST_PAYLOAD[0][0])
         elif url == "https://api.github.com/orgs/google/repos":
-            return MockResponse(TEST_PAYLOAD)
+            return MockResponse(TEST_PAYLOAD[0][1])
         return MockResponse(None, 404)
 
     def test_public_repos(self):
@@ -162,7 +164,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         list of repositories.
         """
         client = GithubOrgClient("google")
-        self.assertEqual(client.public_repos(), TEST_PAYLOAD)
+        self.assertEqual(client.public_repos(), TEST_PAYLOAD[0][2])
 
     def test_public_repos_with_license(self):
         """
@@ -171,7 +173,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(license="apache-2.0"),
-                         TEST_PAYLOAD)
+                         TEST_PAYLOAD[0][3])
 
 
 class MockResponse:
@@ -180,12 +182,17 @@ class MockResponse:
     """
 
     def __init__(self, json_data, status_code=200):
-        """the init function stands for data-json"""
+        """
+        Initialize the MockResponse object with the provided JSON data
+        and status code.
+        """
         self.json_data = json_data
         self.status_code = status_code
 
     def json(self):
-        """Return the JSON data of the response."""
+        """
+        Return the JSON data of the response.
+        """
         return self.json_data
 
 
