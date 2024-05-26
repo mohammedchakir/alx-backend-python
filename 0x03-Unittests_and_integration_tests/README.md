@@ -5,7 +5,7 @@
 By Emmanuel Turlay, Staff Software Engineer at Cruise
 
 
-![f088970b450e82c881ea](https://github.com/mohammedchakir/alx-backend-python/assets/129831433/df4d9ad8-0d74-42fd-896b-6239783debd6)
+![f088970b450e82c881ea](https://github.com/mohammedchakir/alx-backend-python/assets/129831433/8fcd2ae3-45c9-40cc-8332-f4f8310cfae3)
 
 
 Unit testing is the process of testing that a particular function returns expected results for different set of inputs. A unit test is supposed to test standard inputs and corner cases. A unit test should only test the logic defined inside the tested function. Most calls to additional functions should be mocked, especially if they make network or database calls.
